@@ -18,20 +18,9 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                EXPORTABLE TABLE
+                                ALL CATEGORY
+                                <span class="badge bg-blue">{{ $categories->count() }}</span>
                             </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
                         </div>
                         <div class="body">
                             <div class="table-responsive">
@@ -40,6 +29,7 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
+                                            <th>Post Count</th>
                                             <th>Created At</th>
                                             <th>Updated At</th> 
                                             <th>Action</th>                                         
@@ -49,6 +39,7 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Name</th>
+                                            <th>Post Count</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
                                             <th>Action</th>
@@ -59,6 +50,7 @@
                                     	 <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $category->name }}</td>
+                                            <td>{{ $category->posts->count() }}</td>
                                             <td>{{ $category->created_at }}</td>
                                             <td>{{ $category->updated_at }}</td>
                                             <td class="text-center">
