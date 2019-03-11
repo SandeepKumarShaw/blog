@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Author;
 
 use App\Post;
 use App\Category;
 use App\Tag;
+use App\User;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
@@ -12,8 +14,8 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-
-
+use App\Notifications\NewAuthorPost;
+use Illuminate\Support\Facades\Notifications;
 class PostController extends Controller
 {
     /**
@@ -23,8 +25,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->get();
-        return view('admin.post.index',compact('posts'));
+        $posts = Auth::user()->posts()->latest()->get();
+        //$posts = Post::latest()->get();
+        return view('author.post.index',compact('posts'));
     }
 
     /**
@@ -36,7 +39,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags       = Tag::all();
-        return view('admin.post.create',compact('categories','tags'));
+        return view('author.post.create',compact('categories','tags'));
     }
 
     /**
@@ -80,14 +83,18 @@ class PostController extends Controller
         } else {
              $post->status  = false;
         }
-        $post->is_approved  = true;
+        $post->is_approved  = false;
         $post->save();
 
         $post->categories()->attach($request->categories);
         $post->tags()->attach($request->tags);
 
+
+        $users = User::where('role_id',1)->get();
+        Notification::send($users, new NewAuthorPost($post));
+
         Toastr::success('Post Successfully Save:', 'success');
-        return redirect()->route('admin.post.index'); 
+        return redirect()->route('author.post.index'); 
         
         
     }
@@ -100,7 +107,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('admin.post.show',compact('post'));
+         if(Auth::id() !== $post->user_id) {
+             Toastr::error('You are not authorize to access this post!', 'Error');
+            return redirect()->route('author.post.index');
+        } else {
+            return view('author.post.show',compact('post'));
+
+        }
     }
 
     /**
@@ -111,9 +124,15 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $categories = Category::all();
-        $tags       = Tag::all();
-        return view('admin.post.edit',compact('post','categories','tags'));
+        if(Auth::id() !== $post->user_id) {
+            return redirect()->route('author.post.index');
+        } else {
+            $categories = Category::all();
+            $tags       = Tag::all();
+            return view('author.post.edit',compact('post','categories','tags'));
+        }
+
+        
     }
 
     /**
@@ -163,29 +182,14 @@ class PostController extends Controller
         } else {
              $post->status  = false;
         }
-        $post->is_approved  = true;
+        $post->is_approved  = false;
         $post->save();
 
         $post->categories()->sync($request->categories);
         $post->tags()->sync($request->tags);
 
         Toastr::success('Post Successfully Updated:', 'success');
-        return redirect()->route('admin.post.index'); 
-    }
-    public function pending(){
-        $posts =Post::where('is_approved', false)->get();
-        return view('admin.post.pending',compact('posts'));
-    }
-    public function approval($id){
-        $post = Post::find($id);
-        if($post->is_approved == false){
-            $post->is_approved = true;
-            $post->save();
-            Toastr::success('Post Successfully Approved:', 'success');
-        }else{
-             Toastr::info('This Post is already Approved:', 'info');
-        }
-        return redirect()->back();
+        return redirect()->route('author.post.index'); 
     }
 
     /**
@@ -206,6 +210,6 @@ class PostController extends Controller
         $post->delete();
         
         Toastr::success('Post Successfully Deleted:', 'success');
-        return redirect()->route('admin.post.index');
+        return redirect()->route('author.post.index');
     }
 }

@@ -4,17 +4,12 @@
 @endpush
 @section('content')
 	<div class="container-fluid">
-	 <a class="btn btn-danger m-t-15 waves-effect" href="{{ route('admin.post.index') }}">BACK</a>  
-	 @if($post->is_approved == false)
-	   <button type="button" class="btn btn-success pull-right" onclick="deletePost({{ $post->id }})">
+	 <a class="btn btn-danger m-t-15 waves-effect" href="{{ route('author.post.index') }}">BACK</a>  
+	 @if($post->status == false)
+	   <button type="button" class="btn btn-success pull-right">
 	   	  <i class="material-icons">done</i>
 	   	  <span>Approve</span>
 	   </button>
-	   <form action="{{ route('admin.post.approve', $post->id)}}" method="POST" id="approval-form-{{ $post->id }}" style="display: none;">
-	   	@csrf
-	   	@method('PUT')
-	   	
-	   </form>
 	 @else
 	    <button type="button" class="btn btn-success pull-right" disabled="disabled">
 	   	  <i class="material-icons">done</i>
@@ -104,45 +99,5 @@
 
 		});
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script type="text/javascript">
-	function deletePost(id) {
-		const swalWithBootstrapButtons = Swal.mixin({
-			  confirmButtonClass: 'btn btn-success',
-			  cancelButtonClass: 'btn btn-danger',
-			  buttonsStyling: false,
-			})
-
-			swalWithBootstrapButtons.fire({
-			  title: 'Are you sure?',
-			  text: "You want to approve this post!",
-			  type: 'warning',
-			  showCancelButton: true,
-			  confirmButtonText: 'Yes, approve it!',
-			  cancelButtonText: 'No, cancel!',
-			  reverseButtons: true
-			}).then((result) => {
-			  if (result.value) {
-			    /*swalWithBootstrapButtons.fire(
-			      'Deleted!',
-			      'Your file has been deleted.',
-			      'success'
-			    )*/
-			     event.preventDefault();
-			    document.getElementById('approval-form-'+id).submit();
-			    
-			  } else if (
-			    // Read more about handling dismissals
-			    result.dismiss === Swal.DismissReason.cancel
-			  ) {
-			    swalWithBootstrapButtons.fire(
-			      'Cancelled',
-			      'The Post Remain Pending:)',
-			      'error'
-			    )
-			  }
-			})
-	}
-</script>
 
 @endpush
