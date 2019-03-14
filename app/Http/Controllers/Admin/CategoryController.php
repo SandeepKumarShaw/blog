@@ -64,11 +64,11 @@ class CategoryController extends Controller
             }
 
             //resize image for category and upload
-                $category = Image::make($image)->resize(1600,479)->save();
+                $category = Image::make($image)->resize(1600,479)->save($imagename, 90);
                 Storage::disk('public')->put('category/'.$imagename,$category);
 
             //resize image for category slider and upload
-                $slider = Image::make($image)->resize(500,333)->save();
+                $slider = Image::make($image)->resize(500,333)->save($imagename, 90);
                 Storage::disk('public')->put('category/slider/'.$imagename,$slider);
 
         }else{
@@ -153,11 +153,11 @@ class CategoryController extends Controller
             }
 
             //resize image for category and upload
-                $categoryImage = Image::make($image)->resize(1600,479)->save();
+                $categoryImage = Image::make($image)->resize(1600,479)->save($imagename, 90);
                 Storage::disk('public')->put('category/'.$imagename,$categoryImage);
 
             //resize image for category slider and upload
-                $slider = Image::make($image)->resize(500,333)->save();
+                $slider = Image::make($image)->resize(500,333)->save($imagename, 90);
                 Storage::disk('public')->put('category/slider/'.$imagename,$slider);
         }else{
             $imagename = $category->image;

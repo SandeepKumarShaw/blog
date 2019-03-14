@@ -68,7 +68,7 @@ class PostController extends Controller
             if(!storage::disk('public')->exists('post')){
                 storage::disk('public')->makeDirectory('post');
             }
-            $postImage = Image::make($image)->resize(1600,1066)->save();
+            $postImage = Image::make($image)->resize(1600,1066)->save($imageName, 90);
             Storage::disk('public')->put('post/'.$imageName,$postImage);
         }else{
             $imageName = "default.png";
@@ -167,7 +167,7 @@ class PostController extends Controller
                 storage::disk('public')->delete('post/'.$post->image);
             }
 
-            $postImage = Image::make($image)->resize(1600,1066)->save();
+            $postImage = Image::make($image)->resize(1600,1066)->save($imageName, 90);
             Storage::disk('public')->put('post/'.$imageName,$postImage);
         }else{
             $imageName = $post->image;
@@ -188,6 +188,9 @@ class PostController extends Controller
 
         $post->categories()->sync($request->categories);
         $post->tags()->sync($request->tags);
+
+        $users = User::where('role_id',1)->get();
+        Notification::send($users, new NewAuthorPost($post));
 
         Toastr::success('Post Successfully Updated:', 'success');
         return redirect()->route('author.post.index'); 

@@ -40,7 +40,7 @@ class SettingsController extends Controller
             if(storage::disk('public')->exists('public/'.$user->image)){
                 storage::disk('public')->delete('public/'.$user->image);
             }
-            $profile = Image::make($image)->resize(500,500)->save();
+            $profile = Image::make($image)->resize(500,500)->save($imageName, 90);
             Storage::disk('public')->put('profile/'.$imageName,$profile);
         }else{
             $imageName = $user->image;
