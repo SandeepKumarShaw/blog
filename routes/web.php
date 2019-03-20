@@ -31,6 +31,7 @@ Route::group(['as'=>'admin.', 'prefix' =>'admin','namespace' =>'Admin','middlewa
 
    Route::get('settings','SettingsController@index')->name('settings');
    Route::put('profile-update','SettingsController@updateProfile')->name('profile.update');
+   Route::put('password-update','SettingsController@updatePassword')->name('password.update');
 });
 
 Route::group(['as'=>'author.','prefix' =>'author','namespace' =>'Author','middleware'=>['auth','author']], function(){

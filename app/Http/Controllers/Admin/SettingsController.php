@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Hash;
 
 
 class SettingsController extends Controller
@@ -53,5 +54,30 @@ class SettingsController extends Controller
 
         Toastr::success('User Profile Successfully Updated:', 'success');
         return redirect()->back(); 
+    }
+    public function updatePassword(Request $request){
+        $this->validate($request,[
+         'old_password' => 'required',
+         'password' => 'required|confirmed'
+        ]);
+
+        $hashedPassword = Auth::user()->password;
+        if(Hash::check($request->old_password,$hashedPassword)){
+            if(!Hash::check($request->password,$hashedPassword)){
+                $user = User::find(Auth::id());
+                $user->password = Hash::make($request->password);
+                $user->save();
+                Toastr::success('User Password Successfully Updated:', 'success');
+                Auth::logout();
+                return redirect()->back(); 
+            }else{
+                Toastr::error('New Password not matched with confirm password:', 'Error');
+                return redirect()->back(); 
+            }
+        }else{
+                Toastr::error('Current Password is not matched::', 'Error');
+                return redirect()->back(); 
+        }
+
     }
 }
