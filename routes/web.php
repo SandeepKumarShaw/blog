@@ -18,6 +18,12 @@ Auth::routes();
 Route::post('subscriber','SubscriberController@store')->name('subscriber.store');
 
 
+
+Route::group(['middleware'=>['auth']], function(){
+  Route::post('favorite/{post}/add','FavoriteController@add')->name('post.favorite');
+});
+
+
 Route::group(['as'=>'admin.', 'prefix' =>'admin','namespace' =>'Admin','middleware'=>['auth','admin']], function(){
   
    Route::get('dashboard','DashboardController@index')->name('dashboard');
@@ -29,6 +35,8 @@ Route::group(['as'=>'admin.', 'prefix' =>'admin','namespace' =>'Admin','middlewa
    Route::get('subscriber','SubscriberController@index')->name('subscriber.index');
    Route::delete('subscriber/{id}','SubscriberController@destroy')->name('subscriber.destroy');
 
+   Route::get('favorite','FavoriteController@index')->name('favorite.index');
+
    Route::get('settings','SettingsController@index')->name('settings');
    Route::put('profile-update','SettingsController@updateProfile')->name('profile.update');
    Route::put('password-update','SettingsController@updatePassword')->name('password.update');
@@ -37,4 +45,8 @@ Route::group(['as'=>'admin.', 'prefix' =>'admin','namespace' =>'Admin','middlewa
 Route::group(['as'=>'author.','prefix' =>'author','namespace' =>'Author','middleware'=>['auth','author']], function(){
 	Route::get('dashboard','DashboardController@index')->name('dashboard');	
 	Route::resource('post','PostController');
+
+   Route::get('settings','SettingsController@index')->name('settings');
+   Route::put('profile-update','SettingsController@updateProfile')->name('profile.update');
+   Route::put('password-update','SettingsController@updatePassword')->name('password.update');
 });

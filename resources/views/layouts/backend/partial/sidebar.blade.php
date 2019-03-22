@@ -2,7 +2,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="{{ URL::to('assets/backend/images/user.png')}}" width="48" height="48" alt="User" />
+                    <img src="{{ Storage::disk('public')->url('profile/'.Auth::user()->image )}}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</div>
@@ -10,7 +10,7 @@
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>                            
+                            <li><a href="{{ Auth::user()->role->id == 1 ? route('admin.settings') : route('author.settings') }}"><i class="material-icons">person</i>Profile</a></li>                            
                             <li role="separator" class="divider"></li>
                             <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -62,6 +62,12 @@
                                 <span>Pending Posts</span>
                             </a>
                         </li>
+                        <li class="{{ Request::is('admin/favorite') ? 'active' : '' }}">
+                            <a href="{{ route('admin.favorite.index') }}">
+                                <i class="material-icons">favorite</i>
+                                <span>Favorite Posts</span>
+                            </a>
+                        </li>
                         <li class="{{ Request::is('admin/subscriber') ? 'active' : ''}}">
                             <a href="{{ route('admin.subscriber.index') }}">
                                 <i class="material-icons">subscriptions</i>
@@ -99,7 +105,13 @@
                                 <span>Posts</span>
                             </a>
                         </li>
-                        <li class="header">System</li>                        
+                        <li class="header">System</li>  
+                        <li class="{{ Request::is('author/settings') ? 'active' : ''}}">
+                            <a href="{{ route('author.settings') }}">
+                                <i class="material-icons">settings</i>
+                                <span>Settings</span>
+                            </a>
+                        </li>                                     
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
