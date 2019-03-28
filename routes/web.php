@@ -17,6 +17,7 @@ Auth::routes();
 
 Route::post('subscriber','SubscriberController@store')->name('subscriber.store');
 
+Route::get('post/{slug}','PostController@details')->name('post.details');
 
 
 Route::group(['middleware'=>['auth']], function(){
