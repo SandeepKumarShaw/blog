@@ -25,9 +25,20 @@
 	                                <label class="form-label">Post Title</label>
 	                            </div>
 	                        </div>
-	                        <div class="form-group">
-	                        	<label class="image">Feature Image</label>
-	                            <input type="file" id="image" name="image" class="form-control">
+	                          <div class="form-group">
+	                        	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	                        		<label class="image">Feature Image</label>
+	                            <input type="file" id="image" name="image" class="form-control" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+	                        	</div>
+	                        	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+	                        		<img src="{{ URL::to('assets/backend/images/default.png')}}" id="blah" alt="your image" width="100" height="100" />
+
+	                        	</div>
+	                        	
+
+
+
+
 	                        </div>
 
 	                        <div class="form-group">
