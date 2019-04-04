@@ -22,6 +22,9 @@ Route::get('/tag/{slug}','PostController@postByTag')->name('tag.posts');
 
 Route::get('/search', 'SearchController@search')->name('search');
 
+Route::get('profile/{username}', 'AuthorController@profile')->name('author.profile');
+
+
 
 
 //Common LoggedIn Routes
