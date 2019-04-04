@@ -46,6 +46,9 @@ Route::group(['as'=>'admin.', 'prefix' =>'admin','namespace' =>'Admin','middlewa
     Route::put('password-update','SettingsController@updatePassword')->name('password.update');
     Route::get('comments','CommentController@index')->name('comment.index');
     Route::delete('comments/{id}','CommentController@destroy')->name('comment.destroy');
+    
+    Route::get('authors','AuthorController@index')->name('author.index');
+    Route::delete('authors/{id}','AuthorController@destroy')->name('author.destroy');
 
 
 });
