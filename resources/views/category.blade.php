@@ -1,15 +1,23 @@
  @extends('layouts.frontend.app')
- @section('title','ALL POSTS')
+ @section('title','Category')
  @push('css')
 
     <link href="{{ asset('assets/frontend/css/category/styles.css') }}" rel="stylesheet">
 
     <link href="{{ asset('assets/frontend/css/category/responsive.css') }}" rel="stylesheet">
+    <style type="text/css">
+    	.slider {
+		    height: 400px;
+		    width: 100%;
+		    background-image: url({{ Storage::disk('public')->url('category/'.$category->image) }});
+		    background-size: cover;
+		}
+    </style>
  @endpush
   @section('content')
 
   	<div class="slider display-table center-text">
-		<h1 class="title display-table-cell"><b>BEAUTY</b></h1>
+		<h1 class="title display-table-cell"><b>{{ $category->name }}</b></h1>
 	</div><!-- slider -->
 
 	<section class="blog-area section">
@@ -27,7 +35,7 @@
 
 							<div class="blog-info">
 
-								<h4 class="title"><a href="#"><b>{{ $post->title }}</b></a></h4>
+								<h4 class="title"><a href="{{ route('post.details',$post->slug ) }}"><b>{{ $post->title }}</b></a></h4>
 
 								<ul class="post-footer">
 									<li>
@@ -57,7 +65,7 @@
 				@endforeach
 			</div><!-- row -->
 
-			{{ $posts->links() }}
+			{{-- {{ $posts->links() }} --}}
 
 		</div><!-- container -->
 	</section><!-- section -->

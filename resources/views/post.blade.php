@@ -54,7 +54,7 @@
 
 							<ul class="tags">
 								@foreach($post->tags as $tag)
-									<li><a href="#">{{ $tag->name }}</a></li>
+									<li><a href="{{ route('tag.posts', $tag->slug)}}">{{ $tag->name }}</a></li>
 								@endforeach								
 							</ul>
 						</div><!-- blog-post-inner -->
@@ -77,7 +77,7 @@
 									@endguest
 
 								</li>
-								<li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
+								<li><a href="#"><i class="ion-chatbubble"></i>{{ $post->comments->count() }}</a></li>
 								<li><a href="#"><i class="ion-eye"></i>{{ $post->view_count }}</a></li>
 
 							</ul>
@@ -112,7 +112,7 @@
 							<h4 class="title"><b>TAG CLOUD</b></h4>
 							<ul>
 								@foreach($post->categories as $category)
-								<li><a href="#">{{ $category->name }}</a></li>
+								<li><a href="{{ route('category.posts', $category->slug) }}">{{ $category->name }}</a></li>
 								@endforeach
 								
 							</ul>
@@ -163,7 +163,7 @@
 										@endguest
 
 									</li>
-									<li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
+									<li><a href="#"><i class="ion-chatbubble"></i>{{ $post->comments->count() }}</a></li>
 									<li><a href="#"><i class="ion-eye"></i>{{ $randompost->view_count }}</a></li>
 								</ul>
 
